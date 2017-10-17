@@ -1,46 +1,49 @@
 package com.allen.constraintlayout.constraintlayoutsample
 
-import android.animation.ValueAnimator
-import android.os.Bundle
-import android.support.constraint.ConstraintLayout
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.text.Layout
 import android.view.View
-import android.view.animation.LinearInterpolator
-import java.util.concurrent.TimeUnit
-
+import com.allen.constraintlayout.constraintlayoutsample.adapter.ActivityAdapter
+import com.allen.constraintlayout.constraintlayoutsample.model.ActivityModel
+import com.chad.library.adapter.base.BaseQuickAdapter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
-
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: ActivityAdapter
+    lateinit var mDataList: ArrayList<ActivityModel>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val earthImage = findViewById(R.id.earth_image)
-        val marsImage = findViewById(R.id.mars_image)
-        val saturnImage = findViewById(R.id.saturn_image)
-
-        val earthAnimator = animatePlanet(earthImage, TimeUnit.SECONDS.toMillis(2))
-        val marsAnimator = animatePlanet(marsImage, TimeUnit.SECONDS.toMillis(6))
-        val saturnAnimator = animatePlanet(saturnImage, TimeUnit.SECONDS.toMillis(12))
-
-        earthAnimator.start()
-        marsAnimator.start()
-        saturnAnimator.start()
+        setContentView(R.layout.activity_constraint_layout)
+        recyclerView = findViewById(R.id.recyclerView)
+        initData()
+        adapter = ActivityAdapter(mDataList)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+        adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener({ baseQuickAdapter: BaseQuickAdapter<*, *>?, view: View?, position: Int ->
+            val intent = Intent(this@MainActivity, ACTIVITY[position])
+            startActivity(intent)
+        })
     }
 
-    private fun animatePlanet(planet: View, orbitDuration: Long): ValueAnimator {
-        val anim = ValueAnimator.ofFloat(0.0f, 359.0f)
-        anim.addUpdateListener { valueAnimator ->
-            val value= valueAnimator.animatedValue as Float
-            val layoutParams = planet.getLayoutParams() as ConstraintLayout.LayoutParams
-            layoutParams.circleAngle = value
-            planet.setLayoutParams(layoutParams)
-        }
-        anim.duration = orbitDuration
-        anim.interpolator = LinearInterpolator()
-        anim.repeatMode = ValueAnimator.RESTART
-        anim.repeatCount = ValueAnimator.INFINITE
+    companion object {
+        private val ACTIVITY = arrayOf<Class<*>>(CircleConstraintLayoutActivity::class.java)
+        private val TITLE = arrayOf("CircleConstraintLayoutActivity")
+    }
 
-        return anim
+    private fun initData() {
+        mDataList = ArrayList<ActivityModel>()
+        for (i in TITLE.indices) {
+            val item = ActivityModel()
+            item.name = TITLE[i]
+            mDataList.add(item)
+        }
     }
 
 }
