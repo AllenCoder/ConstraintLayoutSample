@@ -16,7 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CircleConstraintLayoutActivity"></activity>
+        <activity android:name=".CircleConstraintLayoutActivity" />
+        <activity android:name=".PullToFinishActivity" />
+        <activity
+            android:name=".CoordinatorAcitivity"
+            android:label="@string/title_activity_coordinator_acitivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_constraint_layout)
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         initData()
         adapter = ActivityAdapter(mDataList)
         recyclerView.adapter = adapter
@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val ACTIVITY = arrayOf<Class<*>>(CircleConstraintLayoutActivity::class.java)
-        private val TITLE = arrayOf("CircleConstraintLayoutActivity")
+        private val ACTIVITY = arrayOf<Class<*>>(CircleConstraintLayoutActivity::class.java,PullToFinishActivity::class.java,CoordinatorAcitivity::class.java)
+        private val TITLE = arrayOf("CircleConstraintLayoutActivity","PullToFinishActivity","CoordinatorAcitivity")
     }
 
     private fun initData() {
